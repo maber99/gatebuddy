@@ -1,0 +1,36 @@
+# Automatische Prüfung bei jedem Pull Request und jedem Push auf main.
+# Ein Merge ist nur sinnvoll, wenn beide Jobs grün sind.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  app:
+    name: App – Typen, Lint, Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+
+  database:
+    name: Datenbank – Migrationen, Zugriffsregeln, Geschäftslogik
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      # Startet nur die Datenbank (ohne restliche Dienste) und spielt alle Migrationen ein
+      - run: supabase db start
+      - run: supabase test db

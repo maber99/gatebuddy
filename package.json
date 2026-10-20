@@ -1,0 +1,10 @@
+{
+  "name": "gatebuddy",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "mobile": "npm run start --workspace apps/mobile",
+    "check": "npm run check --workspace apps/mobile",
+    "test:db": "bash scripts/test-db.sh"
+  }
+}

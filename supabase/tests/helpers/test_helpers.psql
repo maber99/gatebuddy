@@ -1,0 +1,75 @@
+-- Gemeinsame Test-Hilfsfunktionen. Wird von jeder Testdatei per \ir eingebunden.
+-- Alles läuft in einer Transaktion und wird am Ende zurückgerollt.
+
+create extension if not exists pgtap with schema extensions;
+create schema if not exists tests;
+grant usage on schema tests to authenticated, anon;
+
+-- pgTAP speichert Zwischenergebnisse in temporären Tabellen; nach Rollenwechsel
+-- müssen auch die Rollen authenticated/anon dort schreiben dürfen.
+create or replace function tests.open_tap_tables() returns void language plpgsql as $$
+declare r record;
+begin
+  for r in select c.relname, c.relkind from pg_class c
+            where c.relnamespace = pg_my_temp_schema() and c.relkind in ('r', 'S') loop
+    if r.relkind = 'r' then
+      execute format('grant all on pg_temp.%I to authenticated, anon', r.relname);
+    else
+      execute format('grant usage, select, update on sequence pg_temp.%I to authenticated, anon', r.relname);
+    end if;
+  end loop;
+  execute 'grant usage on schema ' || pg_my_temp_schema()::regnamespace || ' to authenticated, anon';
+end $$;
+
+-- Testnutzer anlegen (als Superuser, an RLS vorbei). Namen sind fiktiv.
+create or replace function tests.new_user(
+  p_name text,
+  p_speaks text[] default array['de'],
+  p_learns text[] default array[]::text[],
+  p_interests text[] default array[]::text[],
+  p_photo public.photo_visibility default 'matches'
+) returns uuid language plpgsql as $$
+declare v_id uuid := gen_random_uuid(); l text; i text;
+begin
+  insert into auth.users (id, email) values (v_id, lower(p_name) || '@test.invalid');
+  insert into public.profiles (id, display_name, is_adult_confirmed, terms_version, photo_visibility, avatar_path)
+  values (v_id, p_name, true, 'test-1', p_photo, v_id::text || '/avatar.jpg');
+  foreach l in array p_speaks loop insert into public.profile_languages values (v_id, l, 'speaks'); end loop;
+  foreach l in array p_learns loop insert into public.profile_languages values (v_id, l, 'learns'); end loop;
+  foreach i in array p_interests loop insert into public.profile_interests values (v_id, i); end loop;
+  return v_id;
+end $$;
+
+-- Zeitfenster anlegen (relativ zu now() der Testtransaktion)
+create or replace function tests.add_presence(
+  p_user uuid,
+  p_start_offset interval default interval '0 minutes',
+  p_duration interval default interval '2 hours',
+  p_intents text[] default array['coffee'],
+  p_airport char(3) default 'ZRH'
+) returns uuid language plpgsql as $$
+declare v_id uuid;
+begin
+  insert into public.presences (profile_id, airport_iata, starts_at, ends_at, intents)
+  values (p_user, p_airport, now() + p_start_offset, now() + p_start_offset + p_duration, p_intents)
+  returning id into v_id;
+  return v_id;
+end $$;
+
+-- Als Nutzer handeln (wie ein eingeloggter App-Nutzer)
+create or replace function tests.login_as(p_user uuid) returns void language plpgsql as $$
+begin
+  perform set_config('request.jwt.claim.sub', p_user::text, true);
+  perform set_config('request.jwt.claims', json_build_object('sub', p_user, 'role', 'authenticated')::text, true);
+  perform set_config('role', 'authenticated', true);
+end $$;
+
+-- Als nicht eingeloggter Besucher handeln
+create or replace function tests.login_anon() returns void language plpgsql as $$
+begin
+  perform set_config('request.jwt.claim.sub', '', true);
+  perform set_config('request.jwt.claims', '', true);
+  perform set_config('role', 'anon', true);
+end $$;
+
+grant execute on all functions in schema tests to authenticated, anon;
