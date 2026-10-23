@@ -31,6 +31,7 @@
 | ADR-012 | Geschlechterangabe/-filter | Keine Pflichtangabe, kein Filter im MVP | Dating-Drift vermeiden | **Vorgeschlagen – bewusste Abwägung nötig** |
 | ADR-013 | Datenweitergabe | Keine Weitergabe/kein Verkauf personenbezogener Daten an Partner; B2B nur aggregiert | Vertrauen als Kernwert | **Vorgeschlagen** |
 | ADR-014 | Validierung | Landingpage + Interviews parallel zur Entwicklung, Go/No-Go nach 6 Wochen | Risiko früh senken ohne Stillstand | **Vorgeschlagen** |
+| ADR-015 | Paket-Updates | Expo/React/React Native nur gesammelt beim Expo-SDK-Wechsel; TypeScript folgt der Expo-Vorgabe; übrige Pakete ohne Hauptversionssprünge; Actions frei | Expo legt kompatible Versionen fest; Einzel-Updates können Builds brechen | **Technische Detailentscheidung (Claude), 23.10.2026** |
 
 ## Vorlage für neue Entscheidungen (`docs/adr/ADR-XXX-titel.md`)
 
