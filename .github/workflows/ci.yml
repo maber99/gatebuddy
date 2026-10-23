@@ -15,8 +15,8 @@ jobs:
     name: App – Typen, Lint, Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -27,10 +27,22 @@ jobs:
     name: Datenbank – Migrationen, Zugriffsregeln, Geschäftslogik
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: supabase/setup-cli@v1
         with:
           version: latest
       # Startet nur die Datenbank (ohne restliche Dienste) und spielt alle Migrationen ein
       - run: supabase db start
-      - run: supabase test db
+      - name: supabase test db
+        run: |
+          set -o pipefail
+          supabase test db 2>&1 | tee test-output.txt
+      # Fehlerzeilen zusätzlich als Hinweise am Lauf ausgeben (auch ohne Protokoll-Download lesbar)
+      - name: Fehler als Hinweise ausgeben
+        if: failure()
+        run: |
+          grep -nE "not ok|ERROR|FATAL|psql:|Dubious|Failed|Bad plan|No such file|error" test-output.txt \
+            | head -n 9 \
+            | sed -E 's/%/%25/g; s/\r//g' \
+            | while IFS= read -r line; do echo "::error title=Datenbank-Test::${line}"; done
+          echo "::error title=Datenbank-Test (Ende)::$(tail -n 5 test-output.txt | tr '\n' ' ' | cut -c1-900)"
