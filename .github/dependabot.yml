@@ -1,3 +1,9 @@
+# Automatische Update-Vorschläge.
+# Regeln (Begründung in docs/DECISIONS.md, ADR-015):
+#  - Expo/React/React Native: NICHT einzeln aktualisieren. Expo legt pro SDK-Version passende
+#    Versionen fest; Updates nur gesammelt beim SDK-Wechsel (npx expo install --fix).
+#  - Übrige npm-Pakete: nur Sicherheits-, Fehlerbehebungs- und Funktions-Updates (keine Hauptversionen).
+#  - GitHub Actions: alle Updates (die CI prüft sie selbst).
 version: 2
 updates:
   - package-ecosystem: npm
@@ -5,9 +11,25 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "expo"
+      - dependency-name: "expo-*"
+      - dependency-name: "@expo/*"
+      - dependency-name: "jest-expo"
+      - dependency-name: "eslint-config-expo"
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+      - dependency-name: "react-native"
+      - dependency-name: "react-native-*"
+      - dependency-name: "@types/react"
+      - dependency-name: "typescript"
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      expo:
-        patterns: ["expo*", "@expo/*", "react-native*", "react", "react-dom", "jest-expo"]
+      kleinere-updates:
+        update-types: ["minor", "patch"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

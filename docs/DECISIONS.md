@@ -45,3 +45,4 @@
 ## Begründung
 ## Folgen (technisch, wirtschaftlich, rechtlich)
 ```
+| ADR-015 | Paket-Updates | Expo/React/React Native nur gesammelt beim Expo-SDK-Wechsel; TypeScript folgt der Expo-Vorgabe; übrige Pakete ohne Hauptversionssprünge; Actions frei | Expo legt kompatible Versionen fest; Einzel-Updates können Builds brechen | **Technische Detailentscheidung (Claude), 23.10.2026** |
