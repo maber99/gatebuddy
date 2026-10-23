@@ -22,6 +22,9 @@ for f in "$ROOT"/supabase/migrations/*.sql; do
   "${PSQL[@]}" -d "$DB" -f "$f" >/dev/null
 done
 
+echo "==> Entwicklungsdaten (seed.sql) einspielen – wie 'supabase db start'"
+"${PSQL[@]}" -d "$DB" -f "$ROOT/supabase/seed.sql" >/dev/null
+
 echo "==> pgTAP-Tests"
 cd "$ROOT/supabase/tests"
 export PGDATABASE="$DB"

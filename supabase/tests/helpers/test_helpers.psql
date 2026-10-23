@@ -73,3 +73,14 @@ begin
 end $$;
 
 grant execute on all functions in schema tests to authenticated, anon;
+
+-- Jeder Test startet mit leerer Nutzerbasis (Entwicklungsdaten aus seed.sql würden Zählungen verfälschen).
+-- Läuft nur innerhalb der Testtransaktion und wird mit ROLLBACK am Ende vollständig rückgängig gemacht.
+create or replace function tests.isolate() returns void language plpgsql as $$
+begin
+  if now() = statement_timestamp() then
+    raise exception 'tests.isolate() darf nur innerhalb einer Testtransaktion (BEGIN ... ROLLBACK) laufen';
+  end if;
+  delete from auth.users;
+end $$;
+select tests.isolate();
