@@ -5,7 +5,7 @@
 ### Neu
 - Supabase-Projekt `gatebuddy-dev` (Frankfurt, Free-Plan) angelegt und Datenbank eingespielt
 - Struktur-Abgleich und Funktionsprobe direkt in Supabase: identisch bzw. wie erwartet
-- Verbesserungs-Migration nach Supabase-Prüfung (schnellere Zugriffsregeln, feste Suchpfade, 11 Indizes) – lokal getestet, **wartet auf Freigabe**
+- Verbesserungs-Migration nach Supabase-Prüfung (schnellere Zugriffsregeln, feste Suchpfade, 11 Indizes) – lokal getestet, nach Freigabe in `gatebuddy-dev` eingespielt und erneut geprüft
 - Dokument `docs/ENVIRONMENTS.md` (Umgebungen, Migrationsstand, keine Geheimnisse)
 
 ### Geändert
