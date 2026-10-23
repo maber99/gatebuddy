@@ -11,7 +11,7 @@
 | App: Typprüfung | TypeScript | – | **Fehlerfrei** |
 | App: Codeprüfung | ESLint (eslint-config-expo) | – | **Fehlerfrei** |
 | App: Bündeln für iOS und Android | `expo export` | – | **Erfolgreich** (iOS 3,5 MB, Android 3,8 MB) |
-| Supabase `gatebuddy-dev`: Struktur identisch mit getesteter Datenbank | Prüfsummen-Vergleich | – | **Identisch** (ohne offenen Teil 3b) |
+| Supabase `gatebuddy-dev`: Struktur identisch mit getesteter Datenbank | Prüfsummen-Vergleich | – | **Identisch** (Teil 3b: identisch bis auf wirkungslose Zeilenumbruch-Zeichen) |
 | Supabase `gatebuddy-dev`: Funktionsprobe (Profil, Kandidaten, Match, Chat, Besucher-Sperre) | Testablauf ohne Speicherung | 12 Werte | **Alle wie erwartet** |
 | Wirksamkeit der Tests (Mutationstest) | 2 absichtlich eingebaute Lücken | – | **Beide erkannt** (6 Tests schlugen an) |
 
@@ -32,7 +32,7 @@
 
 | Funktion | Status |
 |---|---|
-| Datenbankschema, Zugriffsregeln, Matching, Moderation | **Implementiert · Erfolgreich getestet** (lokal) · **in Supabase eingespielt** (ausser Teil 3b, siehe ENVIRONMENTS.md) |
+| Datenbankschema, Zugriffsregeln, Matching, Moderation | **Implementiert · Erfolgreich getestet** (lokal) · **vollständig in Supabase `gatebuddy-dev` eingespielt und geprüft** (siehe ENVIRONMENTS.md) |
 | Gleiche Tests mit Supabase CLI (`supabase test db`) in GitHub Actions | **Erfolgreich getestet** (23.10.2026, PostgreSQL 17, inkl. Entwicklungsdaten aus seed.sql) |
 | Lokale Tests auf PostgreSQL 16; Supabase nutzt PostgreSQL 17 | **Geklärt**: vollständige pgTAP-Suite in CI auf PostgreSQL 17 bestanden |
 | App-Gerüst, Navigation, Deutsch/Englisch, Designbausteine | **Implementiert · Erfolgreich getestet** |

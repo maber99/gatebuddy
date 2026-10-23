@@ -21,13 +21,14 @@
 | `20261020120000_core_schema.sql` | ✅ eingespielt 23.10.2026 | |
 | `20261020120100_rules_and_access.sql` | ✅ eingespielt 23.10.2026 | |
 | `20261020120200_app_functions.sql` | ✅ eingespielt 23.10.2026 | |
-| `20261020120250_app_functions_with_deletes.sql` | ⏳ **offen** | Enthält Löschbefehle in Funktionen → Supabase verlangt Bestätigung; durch Gründer im SQL-Editor einzuspielen |
+| `20261020120250_app_functions_with_deletes.sql` | ✅ eingespielt 23.10.2026 durch Gründer (SQL-Editor) | Inhalt identisch mit getesteter Version; nur Windows-Zeilenumbrüche (ohne Wirkung). Nicht in der Supabase-Migrationshistorie erfasst → bei `migration repair` berücksichtigen |
 | `20261020120300_reference_data_storage_realtime.sql` | ✅ eingespielt 23.10.2026 | |
 | `20261023120000_advisor_hardening.sql` | ✅ eingespielt 23.10.2026 (Freigabe Gründer) | Zugriffsregeln technisch optimiert, inhaltlich unverändert |
 
 Hinweis: Supabase vergibt beim Einspielen über den Connector eigene Versionsnummern (Datum des Einspielens). Vor dem ersten Einsatz der Supabase CLI gegen dieses Projekt muss die Historie mit `supabase migration repair` abgeglichen werden.
 
 ### Überprüfung nach dem Einspielen (23.10.2026)
+- Teil 3b: Code der 3 Funktionen identisch (ohne Zeilenumbruch-Zeichen), Rechte identisch. Funktionsprobe ohne Speicherung: Nicht-Admins können nicht moderieren; Admin entfernt gemeldete Nachricht; „Konto löschen“ entfernt Login, Zeitfenster und Match der Person, andere bleiben unberührt, Meldung bleibt anonymisiert; Aufräumen für Nutzer gesperrt – alles wie erwartet.
 - Nach Härtung erneut: Funktionen, Zugriffsregeln und alle 39 Indizes identisch mit lokal getesteter Version.
 - Erweiterte Funktionsprobe (3 fiktive Personen, ohne Speicherung): zusätzlich direktes Anlegen von Matches gesperrt, Blockieren macht unsichtbar und sperrt den Chat, Unbeteiligte lesen keine Nachrichten – alles wie erwartet.
 - Supabase-Sicherheitsprüfung: verbleibend nur 2 bewusst akzeptierte Hinweise (Admin-Tabelle ohne Lesezugriff; App-Funktionen mit eigener Berechtigungsprüfung).
