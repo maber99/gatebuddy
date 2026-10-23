@@ -1,5 +1,16 @@
 # Änderungsprotokoll
 
+## [0.1.1] – 23.10.2026 – Entwicklungsdatenbank bei Supabase
+
+### Neu
+- Supabase-Projekt `gatebuddy-dev` (Frankfurt, Free-Plan) angelegt und Datenbank eingespielt
+- Struktur-Abgleich und Funktionsprobe direkt in Supabase: identisch bzw. wie erwartet
+- Verbesserungs-Migration nach Supabase-Prüfung (schnellere Zugriffsregeln, feste Suchpfade, 11 Indizes) – lokal getestet, **wartet auf Freigabe**
+- Dokument `docs/ENVIRONMENTS.md` (Umgebungen, Migrationsstand, keine Geheimnisse)
+
+### Geändert
+- Migration 3 aufgeteilt: Funktionen mit Löschbefehlen (Konto löschen, Nachricht entfernen, Aufräumen) liegen getrennt, weil Supabase dafür eine Bestätigung verlangt. Inhalt unverändert, 128 Tests bestanden.
+
 ## [0.1.0] – 20.10.2026 – Fundament
 
 ### Entschieden (Gründer)

@@ -1,6 +1,6 @@
 # GATEBUDDY – TESTSTRATEGIE UND TESTSTATUS
 
-> Stand: 20.10.2026 · Letzter vollständiger Lauf: 20.10.2026, lokal (PostgreSQL 16 + pgTAP 1.3.5, Node 22)
+> Stand: 23.10.2026 · Letzter vollständiger Lauf: 23.10.2026, lokal (PostgreSQL 16 + pgTAP 1.3.5, Node 22) · Abgleich mit Supabase (PostgreSQL 17.11): 23.10.2026
 
 ## Ergebnis des letzten Laufs
 
@@ -11,6 +11,8 @@
 | App: Typprüfung | TypeScript | – | **Fehlerfrei** |
 | App: Codeprüfung | ESLint (eslint-config-expo) | – | **Fehlerfrei** |
 | App: Bündeln für iOS und Android | `expo export` | – | **Erfolgreich** (iOS 3,5 MB, Android 3,8 MB) |
+| Supabase `gatebuddy-dev`: Struktur identisch mit getesteter Datenbank | Prüfsummen-Vergleich | – | **Identisch** (ohne offenen Teil 3b) |
+| Supabase `gatebuddy-dev`: Funktionsprobe (Profil, Kandidaten, Match, Chat, Besucher-Sperre) | Testablauf ohne Speicherung | 12 Werte | **Alle wie erwartet** |
 | Wirksamkeit der Tests (Mutationstest) | 2 absichtlich eingebaute Lücken | – | **Beide erkannt** (6 Tests schlugen an) |
 
 ## Was die Datenbank-Tests belegen
@@ -30,9 +32,9 @@
 
 | Funktion | Status |
 |---|---|
-| Datenbankschema, Zugriffsregeln, Matching, Moderation | **Implementiert · Erfolgreich getestet** (lokal) |
+| Datenbankschema, Zugriffsregeln, Matching, Moderation | **Implementiert · Erfolgreich getestet** (lokal) · **in Supabase eingespielt** (ausser Teil 3b, siehe ENVIRONMENTS.md) |
 | Gleiche Tests mit Supabase CLI (`supabase test db`) in GitHub Actions | **Noch nicht getestet** – hier kein Docker verfügbar; erster Lauf nach Repository-Einrichtung |
-| Lokale Tests auf PostgreSQL 16; Supabase nutzt PostgreSQL 17 | **Bekanntes Risiko (gering)** – CI mit Supabase CLI deckt das ab |
+| Lokale Tests auf PostgreSQL 16; Supabase nutzt PostgreSQL 17 | **Teilweise geklärt**: Struktur und Funktionsprobe auf PostgreSQL 17.11 erfolgreich; vollständige pgTAP-Suite auf 17 folgt in CI |
 | App-Gerüst, Navigation, Deutsch/Englisch, Designbausteine | **Implementiert · Erfolgreich getestet** |
 | Profil anlegen (Formular, Prüfungen) | **Implementiert · Erfolgreich getestet** (ohne Server) |
 | Zeitfenster anlegen, Kandidaten, Interesse/Weiter, Match-Liste, Konto löschen | **Implementiert · Noch nicht getestet gegen echten Server** |
