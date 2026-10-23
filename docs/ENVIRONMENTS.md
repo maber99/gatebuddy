@@ -35,7 +35,10 @@ Hinweis: Supabase vergibt beim Einspielen über den Connector eigene Versionsnum
 - Funktionsprobe direkt in Supabase (zwei fiktive Personen, Ablauf ohne Speicherung): Sichtbarkeit, Kandidaten, Punktwert, Match, Nachricht, unsichtbare Reaktionen, Besucher-Sperre **wie erwartet**.
 
 ## GitHub
-- Repository: `maber99/gatebuddy` (privat) – **noch nicht angelegt/verbunden**
+- Repository: `maber99/gatebuddy` (privat), verbunden 23.10.2026. Claude-GitHub-App mit Zugriff nur auf dieses Repository.
+- Automatische Prüfungen (CI) bei jedem Pull Request und auf `main`: App (Typen, Lint, 63 Tests) und Datenbank (`supabase test db`, 128 Tests, PostgreSQL 17) – **grün**.
+- Dependabot-Regeln: ADR-015.
+- Bekannte Einschränkung: CI-Protokolle sind aus Claudes Arbeitsumgebung nicht herunterladbar; Fehler werden deshalb als Hinweise am Lauf ausgegeben.
 
 ## Expo
 - Konto vorhanden (über GitHub). Noch nicht mit dem Projekt verknüpft. Zugangsschlüssel später nur als GitHub-Secret.
