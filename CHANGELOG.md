@@ -8,6 +8,8 @@
 - Verbesserungs-Migration nach Supabase-Prüfung (schnellere Zugriffsregeln, feste Suchpfade, 11 Indizes) – lokal getestet, nach Freigabe in `gatebuddy-dev` eingespielt und erneut geprüft
 - Dokument `docs/ENVIRONMENTS.md` (Umgebungen, Migrationsstand, keine Geheimnisse)
 
+- Teil 3b (Konto löschen, Nachricht entfernen, Aufräumen) durch Gründer eingespielt und geprüft – Datenbank in `gatebuddy-dev` damit vollständig
+
 ### GitHub & CI
 - Repository `maber99/gatebuddy` verbunden, Verlauf hochgeladen
 - Erster CI-Lauf: Datenbank-Test schlug fehl (Entwicklungsdaten erschienen als zusätzliche Kandidaten) → Tests isolieren jetzt ihre Daten; lokales Skript lädt seed.sql wie Supabase. CI grün: 128 + 63 Tests.
