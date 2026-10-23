@@ -33,8 +33,8 @@
 | Funktion | Status |
 |---|---|
 | Datenbankschema, Zugriffsregeln, Matching, Moderation | **Implementiert · Erfolgreich getestet** (lokal) · **in Supabase eingespielt** (ausser Teil 3b, siehe ENVIRONMENTS.md) |
-| Gleiche Tests mit Supabase CLI (`supabase test db`) in GitHub Actions | **Noch nicht getestet** – hier kein Docker verfügbar; erster Lauf nach Repository-Einrichtung |
-| Lokale Tests auf PostgreSQL 16; Supabase nutzt PostgreSQL 17 | **Teilweise geklärt**: Struktur und Funktionsprobe auf PostgreSQL 17.11 erfolgreich; vollständige pgTAP-Suite auf 17 folgt in CI |
+| Gleiche Tests mit Supabase CLI (`supabase test db`) in GitHub Actions | **Erfolgreich getestet** (23.10.2026, PostgreSQL 17, inkl. Entwicklungsdaten aus seed.sql) |
+| Lokale Tests auf PostgreSQL 16; Supabase nutzt PostgreSQL 17 | **Geklärt**: vollständige pgTAP-Suite in CI auf PostgreSQL 17 bestanden |
 | App-Gerüst, Navigation, Deutsch/Englisch, Designbausteine | **Implementiert · Erfolgreich getestet** |
 | Profil anlegen (Formular, Prüfungen) | **Implementiert · Erfolgreich getestet** (ohne Server) |
 | Zeitfenster anlegen, Kandidaten, Interesse/Weiter, Match-Liste, Konto löschen | **Implementiert · Noch nicht getestet gegen echten Server** |
@@ -61,6 +61,7 @@ npx supabase db start && npx supabase test db
 ```
 
 ## Regeln
+- Jede Testdatei beginnt mit `begin;` und `\ir helpers/test_helpers.psql`; dieser leert innerhalb der Transaktion die Nutzerbasis (`tests.isolate()`), damit Entwicklungsdaten Zählungen nicht verfälschen.
 - Jede neue Tabelle: RLS aktiv + mindestens ein „darf“- und ein „darf nicht“-Test.
 - Jeder neue Fehlercode der Datenbank muss in `apps/mobile/src/domain/errors.ts` und in beiden Sprachen stehen – ein Test erzwingt das.
 - Vor sicherheitskritischen Änderungen: Mutationstest wiederholen (Regel kurz entfernen → Tests müssen fehlschlagen).

@@ -8,6 +8,11 @@
 - Verbesserungs-Migration nach Supabase-Prüfung (schnellere Zugriffsregeln, feste Suchpfade, 11 Indizes) – lokal getestet, nach Freigabe in `gatebuddy-dev` eingespielt und erneut geprüft
 - Dokument `docs/ENVIRONMENTS.md` (Umgebungen, Migrationsstand, keine Geheimnisse)
 
+### GitHub & CI
+- Repository `maber99/gatebuddy` verbunden, Verlauf hochgeladen
+- Erster CI-Lauf: Datenbank-Test schlug fehl (Entwicklungsdaten erschienen als zusätzliche Kandidaten) → Tests isolieren jetzt ihre Daten; lokales Skript lädt seed.sql wie Supabase. CI grün: 128 + 63 Tests.
+- Dependabot-Regeln (ADR-015); 4 riskante Vorschläge begründet abgelehnt, 3 Actions-Updates übernommen
+
 ### Geändert
 - Migration 3 aufgeteilt: Funktionen mit Löschbefehlen (Konto löschen, Nachricht entfernen, Aufräumen) liegen getrennt, weil Supabase dafür eine Bestätigung verlangt. Inhalt unverändert, 128 Tests bestanden.
 
